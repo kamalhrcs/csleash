@@ -1,7 +1,9 @@
 import { Response } from 'express';
 import Controller from '../../controller';
 import {
+    CREATE_PROJECT,
     IArchivedQuery,
+    IProject,
     IProjectParam,
     IUnleashConfig,
     IUnleashServices,
@@ -22,7 +24,10 @@ import {
     projectsSchema,
     ProjectsSchema,
 } from '../../../openapi';
-import { getStandardResponses } from '../../../openapi/util/standard-responses';
+import {
+    emptyResponse,
+    getStandardResponses,
+} from '../../../openapi/util/standard-responses';
 import { OpenApiService, SettingService } from '../../../services';
 import { IAuthRequest } from '../../unleash-types';
 import { ProjectApiTokenController } from './api-token';
@@ -58,6 +63,26 @@ export default class ProjectApi extends Controller {
                         'This endpoint returns an list of all the projects in the Unleash instance.',
                     responses: {
                         200: createResponseSchema('projectsSchema'),
+                        ...getStandardResponses(401, 403),
+                    },
+                }),
+            ],
+        });
+
+        this.route({
+            path: '/validate',
+            method: 'post',
+            handler: this.validateProjectId,
+            permission: NONE,
+            middleware: [
+                services.openApiService.validPath({
+                    tags: ['Projects'],
+                    operationId: 'validateProjectId',
+                    summary: 'Validate a projectId.',
+                    description:
+                        'This endpoint returns an list of all the projects in the Unleash instance.',
+                    responses: {
+                        200: emptyResponse,
                         ...getStandardResponses(401, 403),
                     },
                 }),
@@ -104,6 +129,25 @@ export default class ProjectApi extends Controller {
             ],
         });
 
+        this.route({
+            method: 'post',
+            path: '',
+            handler: this.createProject,
+            permission: CREATE_PROJECT,
+            middleware: [
+                services.openApiService.validPath({
+                    tags: ['Projects'],
+                    operationId: 'createProject',
+                    summary: 'endpoint to create a new project',
+                    description: 'endpoint to create a new project. ',
+                    responses: {
+                        200: createResponseSchema('projectSchema'),
+                        ...getStandardResponses(401, 403, 404),
+                    },
+                }),
+            ],
+        });
+
         this.use(
             '/',
             new ProjectFeaturesController(
@@ -124,12 +168,7 @@ export default class ProjectApi extends Controller {
         res: Response<ProjectsSchema>,
     ): Promise<void> {
         const { user } = req;
-        const projects = await this.projectService.getProjects(
-            {
-                id: 'default',
-            },
-            user.id,
-        );
+        const projects = await this.projectService.getProjects({}, user.id);
 
         this.openApiService.respondWithValidation(
             200,
@@ -137,6 +176,17 @@ export default class ProjectApi extends Controller {
             projectsSchema.$id,
             { version: 1, projects: serializeDates(projects) },
         );
+    }
+
+    async validateProjectId(
+        req: IAuthRequest<unknown, { id: string }>,
+        res: Response,
+    ): Promise<void> {
+        const { id } = req.body;
+
+        this.projectService.validateId(id);
+
+        res.end();
     }
 
     async getProjectOverview(
@@ -180,5 +230,23 @@ export default class ProjectApi extends Controller {
                 'Feature dora metrics is not enabled',
             );
         }
+    }
+
+    async createProject(
+        req: IAuthRequest<unknown, unknown, IProject, unknown>,
+        res: Response<IProjectParam>,
+    ): Promise<void> {
+        const project = req.body;
+
+        const { user } = req;
+
+        this.projectService.validateId(project.id);
+
+        const createdProject = await this.projectService.createProject(
+            project,
+            user,
+        );
+
+        res.status(201).send({ projectId: createdProject.id });
     }
 }

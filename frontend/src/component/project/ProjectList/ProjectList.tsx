@@ -64,27 +64,9 @@ interface ICreateButtonData {
 const NAVIGATE_TO_CREATE_PROJECT = 'NAVIGATE_TO_CREATE_PROJECT';
 
 function resolveCreateButtonData(
-    isOss: boolean,
     hasAccess: boolean
 ): ICreateButtonData {
-    if (isOss) {
-        return {
-            disabled: true,
-            tooltip: {
-                titleComponent: (
-                    <PremiumFeature feature="adding-new-projects" tooltip />
-                ),
-                sx: { maxWidth: '320px' },
-                variant: 'custom',
-            },
-            endIcon: (
-                <ThemeMode
-                    darkmode={<ProPlanIconLight />}
-                    lightmode={<ProPlanIcon />}
-                />
-            ),
-        };
-    } else if (!hasAccess) {
+    if (!hasAccess) {
         return {
             tooltip: {
                 title: 'You do not have permission to create new projects',
@@ -151,7 +133,6 @@ export const ProjectListNew = () => {
     };
 
     const createButtonData = resolveCreateButtonData(
-        isOss(),
         hasAccess(CREATE_PROJECT)
     );
 

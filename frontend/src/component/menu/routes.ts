@@ -63,7 +63,6 @@ export const routes: IRoute[] = [
         title: 'Create',
         component: LazyCreateProject,
         type: 'protected',
-        enterprise: true,
         menu: {},
     },
     {
@@ -72,7 +71,6 @@ export const routes: IRoute[] = [
         title: ':projectId',
         component: EditProject,
         type: 'protected',
-        enterprise: true,
         menu: {},
     },
     {
@@ -128,7 +126,6 @@ export const routes: IRoute[] = [
         parent: '/projects',
         title: ':projectId',
         component: LazyProject,
-        flag: P,
         type: 'protected',
         menu: {},
     },
@@ -270,7 +267,6 @@ export const routes: IRoute[] = [
         title: 'Environments',
         component: EnvironmentTable,
         type: 'protected',
-        flag: EEA,
         menu: { mobile: true, advanced: true },
     },
 
@@ -351,7 +347,6 @@ export const routes: IRoute[] = [
         hidden: false,
         type: 'protected',
         menu: { mobile: true, advanced: true },
-        flag: 'integrationsRework',
     },
 
     // Segments
@@ -363,7 +358,6 @@ export const routes: IRoute[] = [
         type: 'protected',
         layout: 'main',
         menu: {},
-        flag: SE,
     },
     {
         path: '/segments/edit/:segmentId',
@@ -373,7 +367,6 @@ export const routes: IRoute[] = [
         type: 'protected',
         layout: 'main',
         menu: {},
-        flag: SE,
     },
     {
         path: '/segments',
@@ -382,7 +375,6 @@ export const routes: IRoute[] = [
         hidden: false,
         type: 'protected',
         menu: { mobile: true, advanced: true },
-        flag: SE,
     },
 
     // History
