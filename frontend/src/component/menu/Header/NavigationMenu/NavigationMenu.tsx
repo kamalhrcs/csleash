@@ -1,11 +1,8 @@
 import { Divider, Tooltip } from '@mui/material';
 import { Menu, MenuItem, styled } from '@mui/material';
-import { ConditionallyRender } from 'component/common/ConditionallyRender/ConditionallyRender';
-import useUiConfig from 'hooks/api/getters/useUiConfig/useUiConfig';
 import { INavigationMenuItem } from 'interfaces/route';
 import { Link } from 'react-router-dom';
-import { EnterpriseBadge } from '../../../common/EnterpriseBadge/EnterpriseBadge';
-import { useCallback } from 'react';
+
 
 interface INavigationMenuProps {
     options: INavigationMenuItem[];
@@ -37,11 +34,6 @@ const StyledSpan = styled('span')(({ theme }) => ({
     borderRadius: '2px',
 }));
 
-const StyledBadgeContainer = styled('div')(({ theme }) => ({
-    marginLeft: 'auto',
-    paddingLeft: theme.spacing(2),
-    display: 'flex',
-}));
 
 export const NavigationMenu = ({
     options,
@@ -50,22 +42,8 @@ export const NavigationMenu = ({
     anchorEl,
     style,
 }: INavigationMenuProps) => {
-    const { isPro, isOss } = useUiConfig();
 
-    const showBadge = useCallback(
-        (mode?: INavigationMenuItem['menu']['mode']) => {
-            if (
-                isPro() &&
-                !mode?.includes('pro') &&
-                mode?.includes('enterprise')
-            ) {
-                return true;
-            }
-
-            return false;
-        },
-        [isPro]
-    );
+    
 
     return (
         <Menu
@@ -81,7 +59,7 @@ export const NavigationMenu = ({
                     const addDivider =
                         previousGroup &&
                         previousGroup !== option.group &&
-                        (!isOss() || option.group === 'log');
+                        (option.group === 'log');
 
                     return [
                         addDivider ? (
@@ -89,9 +67,7 @@ export const NavigationMenu = ({
                         ) : null,
                         <Tooltip
                             title={
-                                showBadge(option?.menu?.mode)
-                                    ? 'This is an Enterprise feature'
-                                    : ''
+                                ''
                             }
                             arrow
                             placement="left"
@@ -104,14 +80,7 @@ export const NavigationMenu = ({
                             >
                                 <StyledSpan />
                                 {option.title}
-                                <ConditionallyRender
-                                    condition={showBadge(option?.menu?.mode)}
-                                    show={
-                                        <StyledBadgeContainer>
-                                            <EnterpriseBadge />
-                                        </StyledBadgeContainer>
-                                    }
-                                />
+                                
                             </MenuItem>
                         </Tooltip>,
                     ];

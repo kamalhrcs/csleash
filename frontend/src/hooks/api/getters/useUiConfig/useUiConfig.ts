@@ -10,7 +10,6 @@ interface IUseUIConfigOutput {
     loading: boolean;
     error?: Error;
     refetch: () => void;
-    isOss: () => boolean;
     isPro: () => boolean;
     isEnterprise: () => boolean;
 }

@@ -40,7 +40,6 @@ import { ProjectSettings } from './ProjectSettings/ProjectSettings';
 import { useFavoriteProjectsApi } from 'hooks/api/actions/useFavoriteProjectsApi/useFavoriteProjectsApi';
 import { ImportModal } from './Import/ImportModal';
 import { IMPORT_BUTTON } from 'utils/testIds';
-import { EnterpriseBadge } from 'component/common/EnterpriseBadge/EnterpriseBadge';
 import { ProjectDoraMetrics } from './ProjectDoraMetrics/ProjectDoraMetrics';
 
 export const Project = () => {
@@ -52,7 +51,7 @@ export const Project = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    const { isOss, uiConfig, isPro } = useUiConfig();
+    const { uiConfig } = useUiConfig();
     const basePath = `/projects/${projectId}`;
     const projectName = project?.name || projectId;
     const { favorite, unfavorite } = useFavoriteProjectsApi();
@@ -103,14 +102,7 @@ export const Project = () => {
             name: 'settings',
             flag: undefined,
         },
-    ]
-        .filter(tab => {
-            if (tab.flag) {
-                return uiConfig.flags[tab.flag];
-            }
-            return true;
-        })
-        .filter(tab => !(isOss() && tab.isEnterprise));
+    ];
 
     const activeTab = [...tabs]
         .reverse()
@@ -149,17 +141,6 @@ export const Project = () => {
         }
         refetch();
     };
-
-    const enterpriseIcon = (
-        <Box
-            sx={theme => ({
-                marginLeft: theme.spacing(1),
-                display: 'flex',
-            })}
-        >
-            <EnterpriseBadge />
-        </Box>
-    );
 
     return (
         <div ref={ref}>
@@ -208,26 +189,21 @@ export const Project = () => {
                         variant="scrollable"
                         allowScrollButtonsMobile
                     >
-                        {tabs.map(tab => {
-                            return (
-                                <StyledTab
-                                    key={tab.title}
-                                    label={tab.title}
-                                    value={tab.path}
-                                    onClick={() => navigate(tab.path)}
-                                    data-testid={`TAB_${tab.title}`}
-                                    iconPosition={
-                                        tab.isEnterprise ? 'end' : undefined
-                                    }
-                                    icon={
-                                        (tab.isEnterprise &&
-                                            isPro() &&
-                                            enterpriseIcon) ||
-                                        undefined
-                                    }
-                                />
-                            );
-                        })}
+                        {tabs.map(tab => (
+                            <StyledTab
+                                key={tab.title}
+                                label={tab.title}
+                                value={tab.path}
+                                onClick={() => navigate(tab.path)}
+                                data-testid={`TAB_${tab.title}`}
+                                iconPosition={
+                                    undefined
+                                }
+                                icon={
+                                    undefined
+                                }
+                            />
+                        ))}
                     </Tabs>
                 </StyledTabContainer>
             </StyledHeader>

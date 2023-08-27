@@ -34,11 +34,9 @@ export const App = () => {
     const { user } = useAuthUser();
     const hasFetchedAuth = Boolean(authDetails || user);
 
-    const { isOss, uiConfig } = useUiConfig();
+    const { uiConfig } = useUiConfig();
 
-    const availableRoutes = isOss()
-        ? routes.filter(route => !route.enterprise)
-        : routes;
+    const availableRoutes = routes;
 
     useEffect(() => {
         if (hasFetchedAuth && Boolean(user?.id)) {

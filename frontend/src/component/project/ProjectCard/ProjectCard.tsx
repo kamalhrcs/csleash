@@ -10,7 +10,6 @@ import {
 } from 'component/providers/AccessProvider/permissions';
 import AccessContext from 'contexts/AccessContext';
 import { DEFAULT_PROJECT_ID } from 'hooks/api/getters/useDefaultProject/useDefaultProjectId';
-import useUiConfig from 'hooks/api/getters/useUiConfig/useUiConfig';
 import useProjects from 'hooks/api/getters/useProjects/useProjects';
 import { useFavoriteProjectsApi } from 'hooks/api/actions/useFavoriteProjectsApi/useFavoriteProjectsApi';
 import { ConditionallyRender } from 'component/common/ConditionallyRender/ConditionallyRender';
@@ -48,7 +47,6 @@ export const ProjectCard = ({
     isFavorite = false,
 }: IProjectCardProps) => {
     const { hasAccess } = useContext(AccessContext);
-    const { isOss } = useUiConfig();
     const [anchorEl, setAnchorEl] = useState<Element | null>(null);
     const [showDelDialog, setShowDelDialog] = useState(false);
     const navigate = useNavigate();
@@ -86,7 +84,6 @@ export const ProjectCard = ({
                 <PermissionIconButton
                     style={{ transform: 'translateX(7px)' }}
                     permission={UPDATE_PROJECT}
-                    hidden={isOss()}
                     projectId={id}
                     data-loading
                     onClick={handleClick}

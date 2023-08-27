@@ -1,12 +1,9 @@
 import useUiConfig from 'hooks/api/getters/useUiConfig/useUiConfig';
 import { adminRoutes } from './adminRoutes';
-import { useInstanceStatus } from 'hooks/api/getters/useInstanceStatus/useInstanceStatus';
-import { filterAdminRoutes } from './filterAdminRoutes';
-import { filterByConfig, mapRouteLink } from 'component/common/util';
+import { mapRouteLink } from 'component/common/util';
 
 export const useAdminRoutes = () => {
-    const { uiConfig, isPro, isEnterprise } = useUiConfig();
-    const { isBilling } = useInstanceStatus();
+    const { uiConfig } = useUiConfig();
     const routes = [...adminRoutes];
 
     if (uiConfig.flags.UNLEASH_CLOUD) {
@@ -19,14 +16,16 @@ export const useAdminRoutes = () => {
         };
     }
 
-    return routes
-        .filter(filterByConfig(uiConfig))
-        .filter(route =>
-            filterAdminRoutes(route?.menu, {
-                enterprise: isEnterprise(),
-                pro: isPro(),
-                billing: isBilling,
-            })
-        )
-        .map(mapRouteLink);
+    return (
+        routes
+            // .filter(filterByConfig(uiConfig))
+            // .filter(route =>
+            //     filterAdminRoutes(route?.menu, {
+            //         enterprise: isEnterprise(),
+            //         pro: isPro(),
+            //         billing: isBilling,
+            //     })
+            // )
+            .map(mapRouteLink)
+    );
 };

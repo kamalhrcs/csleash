@@ -67,7 +67,6 @@ const ProjectEnvironmentList = () => {
     const [selectedEnvironment, setSelectedEnvironment] =
         useState<IProjectEnvironment>();
     const [hideDialog, setHideDialog] = useState(false);
-    const { isOss } = useUiConfig();
 
     const projectEnvironments = useMemo<IProjectEnvironment[]>(
         () =>
@@ -151,7 +150,7 @@ const ProjectEnvironmentList = () => {
     };
 
     const envIsDisabled = (projectName: string) => {
-        return isOss() && projectName === 'default';
+        return projectName === 'default';
     };
 
     const COLUMNS = useMemo(

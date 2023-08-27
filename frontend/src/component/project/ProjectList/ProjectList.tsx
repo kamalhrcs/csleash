@@ -14,17 +14,12 @@ import ResponsiveButton from 'component/common/ResponsiveButton/ResponsiveButton
 import { CREATE_PROJECT } from 'component/providers/AccessProvider/permissions';
 import { Add } from '@mui/icons-material';
 import ApiError from 'component/common/ApiError/ApiError';
-import useUiConfig from 'hooks/api/getters/useUiConfig/useUiConfig';
 import { TablePlaceholder } from 'component/common/Table';
 import { useMediaQuery, styled } from '@mui/material';
 import theme from 'themes/theme';
 import { Search } from 'component/common/Search/Search';
-import { PremiumFeature } from 'component/common/PremiumFeature/PremiumFeature';
 import { ITooltipResolverProps } from 'component/common/TooltipResolver/TooltipResolver';
-import { ReactComponent as ProPlanIcon } from 'assets/icons/pro-enterprise-feature-badge.svg';
-import { ReactComponent as ProPlanIconLight } from 'assets/icons/pro-enterprise-feature-badge-light.svg';
 import { safeRegExp } from '@server/util/escape-regex';
-import { ThemeMode } from 'component/common/ThemeMode/ThemeMode';
 
 const StyledDivContainer = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -86,7 +81,6 @@ export const ProjectListNew = () => {
     const navigate = useNavigate();
     const { projects, loading, error, refetch } = useProjects();
     const [fetchedProjects, setFetchedProjects] = useState<projectMap>({});
-    const { isOss } = useUiConfig();
 
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const [searchParams, setSearchParams] = useSearchParams();

@@ -2,7 +2,6 @@ import { VFC } from 'react';
 import { TextCell } from 'component/common/Table/cells/TextCell/TextCell';
 import { TooltipLink } from 'component/common/TooltipLink/TooltipLink';
 import { RoleDescription } from 'component/common/RoleDescription/RoleDescription';
-import useUiConfig from 'hooks/api/getters/useUiConfig/useUiConfig';
 import { styled } from '@mui/material';
 
 const StyledRoleDescriptions = styled('div')(({ theme }) => ({
@@ -30,31 +29,25 @@ type TMultipleRolesProps = {
 type TRoleCellProps = TSingleRoleProps | TMultipleRolesProps;
 
 export const RoleCell: VFC<TRoleCellProps> = ({ role, roles, value }) => {
-    const { isEnterprise } = useUiConfig();
+    const rolesArray = roles ? roles : [role];
 
-    if (isEnterprise()) {
-        const rolesArray = roles ? roles : [role];
-
-        return (
-            <TextCell>
-                <TooltipLink
-                    tooltip={
-                        <StyledRoleDescriptions>
-                            {rolesArray.map(roleId => (
-                                <RoleDescription
-                                    key={roleId}
-                                    roleId={roleId}
-                                    tooltip
-                                />
-                            ))}
-                        </StyledRoleDescriptions>
-                    }
-                >
-                    {value}
-                </TooltipLink>
-            </TextCell>
-        );
-    }
-
-    return <TextCell>{value}</TextCell>;
+    return (
+        <TextCell>
+            <TooltipLink
+                tooltip={
+                    <StyledRoleDescriptions>
+                        {rolesArray.map(roleId => (
+                            <RoleDescription
+                                key={roleId}
+                                roleId={roleId}
+                                tooltip
+                            />
+                        ))}
+                    </StyledRoleDescriptions>
+                }
+            >
+                {value}
+            </TooltipLink>
+        </TextCell>
+    );
 };

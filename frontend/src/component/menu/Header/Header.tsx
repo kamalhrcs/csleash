@@ -111,7 +111,7 @@ const Header: VFC = () => {
     const [adminRef, setAdminRef] = useState<HTMLButtonElement | null>(null);
     const [configRef, setConfigRef] = useState<HTMLButtonElement | null>(null);
 
-    const { uiConfig, isOss } = useUiConfig();
+    const { uiConfig } = useUiConfig();
     const smallScreen = useMediaQuery(theme.breakpoints.down('md'));
     const [openDrawer, setOpenDrawer] = useState(false);
     const toggleDrawer = () => setOpenDrawer(prev => !prev);
@@ -215,8 +215,7 @@ const Header: VFC = () => {
                         </Tooltip>{' '}
                         <ConditionallyRender
                             condition={
-                                !isOss() &&
-                                !uiConfig?.flags.disableNotifications
+                                false && !uiConfig?.flags.disableNotifications
                             }
                             show={<Notifications />}
                         />
