@@ -28,6 +28,7 @@ export * from './patches-schema';
 export * from './profile-schema';
 export * from './project-schema';
 export * from './segment-schema';
+export * from './segments-schema';
 export * from './variant-schema';
 export * from './variant-flag-schema';
 export * from './version-schema';

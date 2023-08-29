@@ -20,7 +20,7 @@ export const useSegments = (strategyId?: string): IUseSegmentsOutput => {
         : formatApiPath('api/admin/segments');
 
     const { data, error, mutate } = useConditionalSWR(
-        Boolean(uiConfig.flags?.SE),
+        true,
         [],
         url,
         () => fetchSegments(url),

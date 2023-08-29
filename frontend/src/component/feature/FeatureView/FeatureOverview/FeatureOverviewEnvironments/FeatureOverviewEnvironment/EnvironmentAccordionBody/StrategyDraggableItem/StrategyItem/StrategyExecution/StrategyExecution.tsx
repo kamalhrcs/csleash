@@ -6,7 +6,6 @@ import { StrategySeparator } from 'component/common/StrategySeparator/StrategySe
 import { ConstraintItem } from './ConstraintItem/ConstraintItem';
 import { useStrategies } from 'hooks/api/getters/useStrategies/useStrategies';
 import { useSegments } from 'hooks/api/getters/useSegments/useSegments';
-import useUiConfig from 'hooks/api/getters/useUiConfig/useUiConfig';
 import { FeatureOverviewSegment } from 'component/feature/FeatureView/FeatureOverview/FeatureOverviewSegment/FeatureOverviewSegment';
 import { ConstraintAccordionList } from 'component/common/ConstraintAccordion/ConstraintAccordionList/ConstraintAccordionList';
 import {
@@ -44,7 +43,6 @@ export const StrategyExecution: VFC<IStrategyExecutionProps> = ({
 }) => {
     const { parameters, constraints = [] } = strategy;
     const { strategies } = useStrategies();
-    const { uiConfig } = useUiConfig();
     const { segments } = useSegments();
     const strategySegments = segments?.filter(segment => {
         return strategy.segments?.includes(segment.id);
@@ -243,8 +241,7 @@ export const StrategyExecution: VFC<IStrategyExecutionProps> = ({
     }
 
     const listItems = [
-        Boolean(uiConfig.flags.SE) &&
-            strategySegments &&
+        strategySegments &&
             strategySegments.length > 0 && (
                 <FeatureOverviewSegment segments={strategySegments} />
             ),

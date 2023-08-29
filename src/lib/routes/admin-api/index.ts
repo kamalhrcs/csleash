@@ -33,6 +33,7 @@ import { createKnexTransactionStarter } from '../../db/transaction';
 import { Db } from '../../db/db';
 import ExportImportController from '../../features/export-import-toggles/export-import-controller';
 import GroupController from './group';
+import SegmentController from './segment';
 
 class AdminApi extends Controller {
     constructor(config: IUnleashConfig, services: IUnleashServices, db: Db) {
@@ -44,6 +45,11 @@ class AdminApi extends Controller {
         );
 
         this.app.use('/groups', new GroupController(config, services).router);
+
+        this.app.use(
+            '/segments',
+            new SegmentController(config, services).router,
+        );
 
         this.app.use(
             '/feature-types',

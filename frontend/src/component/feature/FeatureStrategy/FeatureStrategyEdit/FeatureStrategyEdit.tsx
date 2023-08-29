@@ -141,7 +141,7 @@ export const FeatureStrategyEdit = () => {
         savedStrategySegments && setSegments(savedStrategySegments);
     }, [JSON.stringify(savedStrategySegments)]);
 
-    const segmentsToSubmit = uiConfig?.flags.SE ? segments : [];
+    const segmentsToSubmit = segments;
     const payload = createStrategyPayload(strategy, segmentsToSubmit);
 
     const onStrategyEdit = async (payload: IFeatureStrategyPayload) => {
