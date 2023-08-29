@@ -40,6 +40,11 @@ export const DELETE_STRATEGY = 'DELETE_STRATEGY';
 export const UPDATE_TAG_TYPE = 'UPDATE_TAG_TYPE';
 export const DELETE_TAG_TYPE = 'DELETE_TAG_TYPE';
 
+//Groups
+export const CREATE_GROUP = 'CREATE_GROUP';
+export const UPDATE_GROUP = 'UPDATE_GROUP';
+export const DELETE_GROUP = 'DELETE_GROUP';
+
 // Project
 export const CREATE_FEATURE = 'CREATE_FEATURE';
 export const UPDATE_FEATURE = 'UPDATE_FEATURE';
@@ -96,6 +101,10 @@ export const ROOT_PERMISSION_CATEGORIES = [
     {
         label: 'Project',
         permissions: [CREATE_PROJECT],
+    },
+    {
+        label: 'Groups',
+        permissions: [CREATE_GROUP, UPDATE_GROUP, DELETE_GROUP],
     },
     {
         label: 'Role',
