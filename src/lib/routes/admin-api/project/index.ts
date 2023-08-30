@@ -2,6 +2,7 @@ import { Response } from 'express';
 import Controller from '../../controller';
 import {
     CREATE_PROJECT,
+    DELETE_PROJECT,
     IArchivedQuery,
     IProject,
     IProjectParam,
@@ -73,7 +74,7 @@ export default class ProjectApi extends Controller {
             path: '/validate',
             method: 'post',
             handler: this.validateProjectId,
-            permission: NONE,
+            permission: CREATE_PROJECT,
             middleware: [
                 services.openApiService.validPath({
                     tags: ['Projects'],
@@ -142,6 +143,25 @@ export default class ProjectApi extends Controller {
                     description: 'endpoint to create a new project. ',
                     responses: {
                         200: createResponseSchema('projectSchema'),
+                        ...getStandardResponses(401, 403, 404),
+                    },
+                }),
+            ],
+        });
+
+        this.route({
+            method: 'delete',
+            path: '/:projectId',
+            handler: this.deleteProject,
+            permission: DELETE_PROJECT,
+            middleware: [
+                services.openApiService.validPath({
+                    tags: ['Projects'],
+                    operationId: 'deleteProject',
+                    summary: 'Delete a project.',
+                    description: 'This endpoint delete a project',
+                    responses: {
+                        200: emptyResponse,
                         ...getStandardResponses(401, 403, 404),
                     },
                 }),
@@ -248,5 +268,21 @@ export default class ProjectApi extends Controller {
         );
 
         res.status(201).send({ projectId: createdProject.id });
+    }
+
+    async deleteProject(
+        req: IAuthRequest<IProjectParam>,
+        res: Response,
+    ): Promise<void> {
+        const { projectId } = req.params;
+
+        const { user } = req;
+
+        const createdProject = await this.projectService.deleteProject(
+            projectId,
+            user,
+        );
+
+        res.status(200).end();
     }
 }
